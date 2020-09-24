@@ -35,6 +35,7 @@
             .then(data => data);
     }
 
+    //Utility functions
     function utils() {       
         function convertFeetToInches(feet) {
             return feet*12;
@@ -64,6 +65,7 @@
         return dinosaurDtos.map(dino => dinoFactory(human, dino));
     }
 
+    //Creates a Dino object with a random fact
     function dinoFactory(human, dinosaurDto) {
         let compareFacts = [
             generateCompareWeightFact,
@@ -84,95 +86,98 @@
     }
 
     // Create Dino Compare Method 1
-    // NOTE: Weight in JSON file is in lbs, height in inches. 
     function generateCompareWeightFact(human, dinosaurDto) {
         if(human.weight * 80 > dinosaurDto.weight) {
-            return `${dinosaurDto.species} weigh on average ${dinosaurDto.weight} lbs.`
+            return `${dinosaurDto.species} weigh on average ${dinosaurDto.weight} lbs.`;
         }
         return dinosaurDto.fact;
     }
     
     // Create Dino Compare Method 2
-    // NOTE: Weight in JSON file is in lbs, height in inches.
     function generateCompareHeightFact(human, dinosaurDto) {
         if(human.height < dinosaurDto.height) {
-            return `${dinosaurDto.species} are on average ${dinosaurDto.height} inches tall.`
+            return `${dinosaurDto.species} are on average ${dinosaurDto.height} inches tall.`;
         }
         return dinosaurDto.fact;
     }
     
     // Create Dino Compare Method 3
-    // NOTE: Weight in JSON file is in lbs, height in inches.
     function generateCompareDietFact(human, dinosaurDto) {
         if(human.diet.toLowerCase() === dinosaurDto.diet) {
-            return `${dinosaurDto.species} are also ${dinosaurDto.diet}s.`
+            return `${dinosaurDto.species} are also ${dinosaurDto.diet}s.`;
         }
         return dinosaurDto.fact;
     }
 
     function generateGrid(human, dinosaurs) {
         function generateDinosaurTile(dino, index) {
-            const dinoElement = document.createElement('div')
-            dinoElement.className = `grid-item dino-${index}`
+            let dinoElement = document.createElement('div');
+            dinoElement.className = `grid-item dino-${index}`;
             
-            const dinoParagraph =  document.createTextNode(dino.fact)
+            let dinoParagraph =  document.createTextNode(dino.fact);
             
-            const dinoImage = document.createElement('img')
-            dinoImage.src = dino.image
+            let dinoImage = document.createElement('img');
+            dinoImage.src = dino.image;
             
-            const dinoHeader = document.createElement('h3')
-            const dinoHeaderText =  document.createTextNode(dino.species)
-            dinoHeader.appendChild(dinoHeaderText)
+            let dinoHeader = document.createElement('h3');
+            let dinoHeaderText =  document.createTextNode(dino.species);
+            dinoHeader.appendChild(dinoHeaderText);
             
-            dinoElement.appendChild(dinoHeader)
-            dinoElement.appendChild(dinoParagraph)
-            dinoElement.appendChild(dinoImage)
+            dinoElement.appendChild(dinoHeader);
+            dinoElement.appendChild(dinoParagraph);
+            dinoElement.appendChild(dinoImage);
             
-            return dinoElement
+            return dinoElement;
         }
         
         function generateHumanTile(human) {
-            const humanElement = document.createElement('div')
-            humanElement.className = 'grid-item'       
+            let humanElement = document.createElement('div');
+            humanElement.className = 'grid-item';
 
-            const humanName = document.createTextNode(human.name)
-            const humanHeader = document.createElement('h3')
-            humanHeader.appendChild(humanName)
+            let humanImage = document.createElement('img');
+            humanImage.src = human.image;
+            
+            let humanName = document.createTextNode(human.name);
+            let humanHeader = document.createElement('h3');
+            humanHeader.appendChild(humanName);
 
-            const humanImage = document.createElement('img')
-            humanImage.src = human.image
+            humanElement.appendChild(humanHeader);
+            humanElement.appendChild(humanImage);
 
-
-            humanElement.appendChild(humanImage)
-            humanElement.appendChild(humanHeader)
-
-            return humanElement
+            return humanElement;
         }
         
-        let grid = document.getElementById('grid')
+        let grid = document.getElementById('grid');
         
         dinosaurs.forEach((dino,index) => {
-            const dinoTile = generateDinosaurTile(dino, index)
-            grid.appendChild(dinoTile)
+            const dinoTile = generateDinosaurTile(dino, index);
+            grid.appendChild(dinoTile);
         })
         
-        const humanTile = generateHumanTile(human)
+        const humanTile = generateHumanTile(human);
         
-        const dinoToInsertBefore = document.getElementsByClassName('dino-4')[0]
-        grid.insertBefore(humanTile, dinoToInsertBefore)
+        const dinoToInsertBefore = document.getElementsByClassName('dino-4')[0];
+        
+        grid.insertBefore(humanTile, dinoToInsertBefore);
     }
 
     // Remove form from screen
+    function hideForm() {
+        let formElement = document.getElementById('dino-compare');
+        formElement.style.display = 'none';
+    }
 
-// On button click, prepare and display infographic
-async function displayInfographic(){
-    let human = createHumanFromForm();
+    // On button click, prepare and display infographic
+    async function displayInfographic(){
+        let human = createHumanFromForm();
 
-    let dinosaurDtos = await getDinosaurDtosFromJson();
-    
-    let dinosaurs = createDinosaursWithRandomFacts(human, dinosaurDtos.Dinos);
-    
-    utils().shuffleArray(dinosaurs)
-    
-    generateGrid(human, dinosaurs)
-}
+        let dinosaurDtos = await getDinosaurDtosFromJson();
+
+        let dinosaurs = createDinosaursWithRandomFacts(human, dinosaurDtos.Dinos);
+
+        utils().shuffleArray(dinosaurs);
+
+        generateGrid(human, dinosaurs);
+
+        hideForm();
+    }

@@ -15,21 +15,21 @@
     }
 
     function createHumanFromForm() {
-        let name = document.getElementById('name').value;
+        const name = document.getElementById('name').value;
         
-        let weight = document.getElementById('weight').value;
+        const weight = document.getElementById('weight').value;
         
-        let dietOptions = document.getElementById('diet');
-        let diet = dietOptions.options[dietOptions.selectedIndex].text;
+        const dietOptions = document.getElementById('diet');
+        const diet = dietOptions.options[dietOptions.selectedIndex].text;
         
-        let feet = document.getElementById('feet').value;
-        let inches = document.getElementById('inches').value;
-        let height = utils().convertFeetToInches(feet) + inches;
+        const feet = document.getElementById('feet').value;
+        const inches = document.getElementById('inches').value;
+        const height = utils().convertFeetToInches(feet) + inches;
         
         return new Human(name, height, weight, diet);
     }
 
-    function getDinosaurDtosFromJson() {
+    function getDinosaurDataObjectsFromJson() {
         return fetch('dino.json')
             .then(response => response.json())
             .then(data => data);
@@ -73,10 +73,10 @@
             generateCompareDietFact
         ];
         
-        let randomFactNum = utils().getRandomInt(compareFacts.length);
-        let generateRandomFact = compareFacts[randomFactNum];
+        const randomFactNum = utils().getRandomInt(compareFacts.length);
+        const generateRandomFact = compareFacts[randomFactNum];
         
-        let dinoFact = dinosaurDto.species === 'Pigeon' 
+        const dinoFact = dinosaurDto.species === 'Pigeon' 
             ? dinosaurDto.fact 
             : generateRandomFact(human, dinosaurDto);
         
@@ -111,16 +111,16 @@
 
     function generateGrid(human, dinosaurs) {
         function generateDinosaurTile(dino, index) {
-            let dinoElement = document.createElement('div');
+            const dinoElement = document.createElement('div');
             dinoElement.className = `grid-item dino-${index}`;
             
-            let dinoParagraph =  document.createTextNode(dino.fact);
+            const dinoParagraph =  document.createTextNode(dino.fact);
             
-            let dinoImage = document.createElement('img');
+            const dinoImage = document.createElement('img');
             dinoImage.src = dino.image;
             
-            let dinoHeader = document.createElement('h3');
-            let dinoHeaderText =  document.createTextNode(dino.species);
+            const dinoHeader = document.createElement('h3');
+            const dinoHeaderText =  document.createTextNode(dino.species);
             dinoHeader.appendChild(dinoHeaderText);
             
             dinoElement.appendChild(dinoHeader);
@@ -131,14 +131,14 @@
         }
         
         function generateHumanTile(human) {
-            let humanElement = document.createElement('div');
+            const humanElement = document.createElement('div');
             humanElement.className = 'grid-item';
 
-            let humanImage = document.createElement('img');
+            const humanImage = document.createElement('img');
             humanImage.src = human.image;
             
-            let humanName = document.createTextNode(human.name);
-            let humanHeader = document.createElement('h3');
+            const humanName = document.createTextNode(human.name);
+            const humanHeader = document.createElement('h3');
             humanHeader.appendChild(humanName);
 
             humanElement.appendChild(humanHeader);
@@ -147,7 +147,7 @@
             return humanElement;
         }
         
-        let grid = document.getElementById('grid');
+        const grid = document.getElementById('grid');
         
         dinosaurs.forEach((dino,index) => {
             const dinoTile = generateDinosaurTile(dino, index);
@@ -163,17 +163,17 @@
 
     // Remove form from screen
     function hideForm() {
-        let formElement = document.getElementById('dino-compare');
+        const formElement = document.getElementById('dino-compare');
         formElement.style.display = 'none';
     }
 
     // On button click, prepare and display infographic
     async function displayInfographic(){
-        let human = createHumanFromForm();
+        const human = createHumanFromForm();
 
-        let dinosaurDtos = await getDinosaurDtosFromJson();
+        const dinosaurDtos = await getDinosaurDataObjectsFromJson();
 
-        let dinosaurs = createDinosaursWithRandomFacts(human, dinosaurDtos.Dinos);
+        const dinosaurs = createDinosaursWithRandomFacts(human, dinosaurDtos.Dinos);
 
         utils().shuffleArray(dinosaurs);
 

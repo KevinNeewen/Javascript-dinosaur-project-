@@ -1,11 +1,9 @@
-    // Create Dino Objects
     function Dino(species, fact, image) {
         this.species = species;
         this.fact = fact;
         this.image = image;
     }
 
-    // Create Human Object
     function Human(name, height, weight, diet) {
         this.name = name;
         this.height = height;
@@ -46,9 +44,9 @@
         }
         
         function shuffleArray(array) {
-            for (var i = array.length - 1; i > 0; i--) {
-                var j = Math.floor(Math.random() * (i + 1));
-                var temp = array[i];
+            for (let i = array.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                let temp = array[i];
                 array[i] = array[j];
                 array[j] = temp;
             }
@@ -80,25 +78,35 @@
             ? dinosaurDto.fact 
             : generateRandomFact(human, dinosaurDto);
         
-        const imagePath = `images/${dinosaurDto.species}.png`;
+        const imagePath = `images/${dinosaurDto.species.toLowerCase()}.png`;
         
         return new Dino(dinosaurDto.species, dinoFact, imagePath);
     }
 
     // Create Dino Compare Method 1
     function generateCompareWeightFact(human, dinosaurDto) {
+        let dinoFact = dinosaurDto.fact;
+        
         if(human.weight * 80 > dinosaurDto.weight) {
-            return `${dinosaurDto.species} weigh on average ${dinosaurDto.weight} lbs.`;
+            dinoFact = `${dinosaurDto.species} weigh on average ${dinosaurDto.weight} lbs.`;
+        } else if(human.weight * 80 < dinosaurDto.weight) {
+            dinoFact = `${dinosaurDto.species} originated from ${dinosaurDto.where}.`;
         }
-        return dinosaurDto.fact;
+        
+        return dinoFact;
     }
     
     // Create Dino Compare Method 2
     function generateCompareHeightFact(human, dinosaurDto) {
+        let dinoFact = dinosaurDto.fact;
+        
         if(human.height < dinosaurDto.height) {
-            return `${dinosaurDto.species} are on average ${dinosaurDto.height} inches tall.`;
+            dinoFact = `${dinosaurDto.species} are on average ${dinosaurDto.height} inches tall.`;
+        } else if(human.height > dinosaurDto.height) {
+            dinoFact = `${dinosaurDto.species} existed during the ${dinosaurDto.when} period.`;
         }
-        return dinosaurDto.fact;
+        
+        return dinoFact;
     }
     
     // Create Dino Compare Method 3
@@ -152,7 +160,7 @@
         dinosaurs.forEach((dino,index) => {
             const dinoTile = generateDinosaurTile(dino, index);
             grid.appendChild(dinoTile);
-        })
+        });
         
         const humanTile = generateHumanTile(human);
         
